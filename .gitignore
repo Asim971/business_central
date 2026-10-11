@@ -16,3 +16,7 @@ __pycache__/
 
 # Scratch clones used during research
 .scratch/
+
+# Customer balance extracts and run output — never commit
+data/
+runs/
