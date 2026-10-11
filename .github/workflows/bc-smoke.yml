@@ -1,0 +1,24 @@
+name: bc-smoke
+# Manual, read-only check that the `qa` environment secrets can reach Business Central.
+# Secrets are stored as GitHub Actions *environment* secrets (environment: qa) — see
+# scripts/set-github-secrets.sh. Nothing here posts to BC.
+on:
+  workflow_dispatch:
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    environment: qa
+    steps:
+      - uses: actions/checkout@v4
+      - name: Business Central S2S smoke test
+        env:
+          AzureAd__Instance: ${{ secrets.AzureAd__Instance }}
+          AzureAd__TenantId: ${{ secrets.AzureAd__TenantId }}
+          AzureAd__ClientId: ${{ secrets.AzureAd__ClientId }}
+          AzureAd__ClientSecret: ${{ secrets.AzureAd__ClientSecret }}
+          Bc__TenantId: ${{ secrets.Bc__TenantId }}
+          Bc__Environment: ${{ secrets.Bc__Environment }}
+          Bc__CompanyId: ${{ secrets.Bc__CompanyId }}
+          Bc__AlPingEnabled: ${{ secrets.Bc__AlPingEnabled }}
+        run: scripts/bc-smoke.sh
